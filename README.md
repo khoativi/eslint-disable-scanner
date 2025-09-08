@@ -42,6 +42,27 @@ src/app.service.ts
 ✖ Found disabled ESLint error rules. Process will stop.
 ```
 
+### Allowlist & Reasons
+
+To handle legitimate cases where rules need to be disabled, create a `.eslint-disable-allow.json` in your project root:
+
+```json
+{
+  "allowedRules": ["@typescript-eslint/no-explicit-any"],
+  "allowedPatterns": ["scripts/**"]
+}
+```
+
+Any disabled rule that is **not** listed in `allowedRules`/`allowedPatterns` must have a `-- reason` at the end of the `eslint-disable` comment:
+
+```ts
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- parse dynamic JSON
+```
+
+- Error rules without a reason will cause the process to fail.
+- Error rules with a reason or allowed rules/patterns will only produce a warning.
+- Warning rules will only produce warnings.
+
 ## CI/CD Integration
 
 Add to your CI pipeline to prevent unwanted rule disabling:
